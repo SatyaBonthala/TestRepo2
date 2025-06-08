@@ -16,6 +16,19 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
 
+# Copy the built files from target folder
+- task: CopyFiles@2
+  inputs:
+    contents: 'target/**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+# Copy pom.xml explicitly to artifact staging directory
+- task: CopyFiles@2
+  inputs:
+    contents: 'pom.xml'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+# Publish the artifact containing both build output and pom.xml
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)'
